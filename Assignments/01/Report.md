@@ -14,12 +14,11 @@ Here's a table showing the improvements I did to make the application go faster.
 
 ### Initial Review
 
-Looking at [test's profile], the hottest function was `Transform::float4::perspectiveDivide() const`, which consumed around 28% of the program's execution time.  There's not a lot in that function, but it does three floating-point divisions, so perhaps that's something to try optimizing.
+Looking at [test's profile], the hottest function was `computePerimeter()`, which consumed the most time as well as was called the most. I 
 
 ### Trying to make `computePerimeter()` go faster
 
-computePerimeter()` is called a bunch of times. In order to hopefully help this issue, I unrolled the loop where computePerimeter() was called.
-By doing so it helped by almost 1 second. 
+computePerimeter()` is called a bunch of times. In order to hopefully help this issue, I unrolled the loop where computePerimeter() is defined. However, that was a bust and slowed things done. Next I located where `computePreimeter()`was called. I unrolled the loop there and by doing so it helped by almost 1 second. 
 
 ### Changing compile flags
 By changing the compile flag to -Ofast, in combination to the previous change of unrolling loops, it significantly helped and sped up the process by about 5x.
