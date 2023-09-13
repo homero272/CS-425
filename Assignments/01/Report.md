@@ -14,7 +14,7 @@ Here's a table showing the improvements I did to make the application go faster.
 
 ### Initial Review
 
-Looking at test's profile, the hottest function was `computePerimeter()`, which consumed the most time as well as was called the most. I 
+Looking at test's profile, the hottest function was `computePerimeter()`, which consumed the most time as well as was called the most.
 
 ### Trying to make `computePerimeter()` go faster
 
