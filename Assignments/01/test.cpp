@@ -7,7 +7,7 @@
 #include <numeric>
 #include <span>
 #include <vector>
-#include<algorithm>
+
 using namespace std;
 
 //---------------------------------------------------------------------------
@@ -144,16 +144,12 @@ void readData(const char* filename, Vertices& vertices, Faces& faces) {
     constexpr size_t numFaces = 28055742;
     faces.reserve(numFaces);
     auto data = reinterpret_cast<unsigned int*>((char*)memory + bytesForVertices);
-    
 
     for (auto i = 0; i < numFaces; ++i) {
         unsigned int numIndices = *data++;
-
         faces.emplace_back(Face{numIndices, reinterpret_cast<Index*>(data)});
         data += numIndices;
     }
-    
-
 }
 
 //----------------------------------------------------------------------------
@@ -196,60 +192,16 @@ Distance distance(const Vertex& p, const Vertex& q) {
 Distance computePerimeter(const Face& face, const Vertices& vertices) {
     Distance perimeter = 0.0;
 
-    
     Index* indices = face.indices;
 
-//     constexpr size_t unrollCount = 8;
-//     const size_t size = face.numIndices - 1;
-//     const size_t count = size/unrollCount;
-//     const size_t remainder = size%unrollCount;//size - unrollCount * count;
     auto i = 0;
-//     size_t i = 0;
-//    for(auto j = 0; j  < count; ++j){
-// 	    auto p = transform(vertices[indices[i]]);
-//         auto q = transform(vertices[indices[++i]]);
-//         perimeter += distance(p, q);
-
-// 	    p = transform(vertices[indices[i]]);
-// 	    q = transform(vertices[indices[++i]]);
-// 	    perimeter += distance(p,q);
-
-// 	    p = transform(vertices[indices[i]]);
-//         q = transform(vertices[indices[++i]]);
-//         perimeter += distance(p,q);
-
-// 	    p = transform(vertices[indices[i]]);
-//         q = transform(vertices[indices[++i]]);
-//         perimeter += distance(p,q);
-
-// 	    p = transform(vertices[indices[i]]);
-//         q = transform(vertices[indices[++i]]);
-//         perimeter += distance(p,q);
-
-// 	    p = transform(vertices[indices[i]]);
-//         q = transform(vertices[indices[++i]]);
-//         perimeter += distance(p,q);
-
-// 	    p = transform(vertices[indices[i]]);
-//         q = transform(vertices[indices[++i]]);
-//         perimeter += distance(p,q);
-
-// 	    p = transform(vertices[indices[i]]);
-//         q = transform(vertices[indices[++i]]);
-//         perimeter += distance(p,q);
-//    }
-//    for(auto j = 0; j < remainder; ++j){
-//        auto p = transform(vertices[indices[i]]);
-//        auto q = transform(vertices[indices[++i]]);
-//        perimeter += distance(p,q);
-//    }
-   while (i < face.numIndices - 1) {
+    while (i < face.numIndices - 1) {
         auto p = transform(vertices[indices[i]]);
         auto q = transform(vertices[indices[++i]]);
         perimeter += distance(p, q);
     }
-    
-    auto p = transform(vertices[indices[i]]);
+
+    auto p = transform(vertices[indices[face.numIndices-1]]);
     auto q = transform(vertices[indices[0]]);
     perimeter += distance(p, q);
 
@@ -274,98 +226,13 @@ int main() {
         Index index = 0;
     } minFace;
 
-     constexpr size_t unrollCount = 8;
-     const size_t size = faces.size();
-     const size_t count = size/unrollCount;
-     const size_t remainder = size - unrollCount * count;
-
-    size_t i = 0;
-    for(auto j = 0; j < count; ++j){
+    for (auto i = 0; i < faces.size(); ++i) {
         auto perimeter = computePerimeter(faces[i], vertices);
 
         if (perimeter < minFace.perimeter) {
             minFace.perimeter = perimeter;
             minFace.index = i;
         }
-        ++i;
-                perimeter = computePerimeter(faces[i], vertices);
-
-        if (perimeter < minFace.perimeter) {
-            minFace.perimeter = perimeter;
-            minFace.index = i;
-        }
-        ++i;
-                perimeter = computePerimeter(faces[i], vertices);
-
-        if (perimeter < minFace.perimeter) {
-            minFace.perimeter = perimeter;
-            minFace.index = i;
-        }
-        ++i;
-                perimeter = computePerimeter(faces[i], vertices);
-
-        if (perimeter < minFace.perimeter) {
-            minFace.perimeter = perimeter;
-            minFace.index = i;
-        }
-        ++i;
-                perimeter = computePerimeter(faces[i], vertices);
-
-        if (perimeter < minFace.perimeter) {
-            minFace.perimeter = perimeter;
-            minFace.index = i;
-        }
-        ++i;
-                 perimeter = computePerimeter(faces[i++], vertices);
-
-        if (perimeter < minFace.perimeter) {
-            minFace.perimeter = perimeter;
-            minFace.index = i;
-        }
-                perimeter = computePerimeter(faces[i], vertices);
-
-        if (perimeter < minFace.perimeter) {
-            minFace.perimeter = perimeter;
-            minFace.index = i;
-        }
-        ++i;
-                perimeter = computePerimeter(faces[i], vertices);
-
-        if (perimeter < minFace.perimeter) {
-            minFace.perimeter = perimeter;
-            minFace.index = i;
-        }
-        ++i;
     }
-
-    for(auto j = 0; j < remainder; ++j){
-                auto perimeter = computePerimeter(faces[i], vertices);
-
-        if (perimeter < minFace.perimeter) {
-            minFace.perimeter = perimeter;
-            minFace.index = i;
-        }
-        ++i;
-    }
-
-
-
-
-    // for (auto i = 0; i < faces.size(); ++i) {
-    //     auto perimeter = min(computePerimeter(faces[i], vertices);//,computePerimeter(faces[i++], vertices);
-        
-
-    //     if (perimeter < minFace.perimeter) {
-    //         minFace.perimeter = perimeter;
-    //         minFace.index = i;
-    //     }
-    // }
-    
-
-
-
-
-
-
     std::cout << "The smallest triangle is " << minFace.index << "\n";
 }
