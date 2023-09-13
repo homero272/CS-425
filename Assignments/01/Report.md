@@ -7,7 +7,7 @@ Here's a table showing the improvements I did to make the application go faster.
 | Version | Time | Speedup | Memory (KB) | Changes |
 | :-----: | ---- | :-----: | :------: | ------- |
 | [01](test.cpp) | 10.51s | &mdash; | 1044092 | Initial version - no changes |
-| [02] (01.cpp) | 9.73s | 1.08x | 1041332 | Unrolled loop that was calling computePerimeter() |
+| [02](01.cpp) | 9.73s | 1.08x | 1041332 | Unrolled loop that was calling computePerimeter() |
 | [03](01.cpp) | 1.97 | 5.33x| 1041332 | along with the loop unrolling, I compile with the -Ofast flag
 
 ## Profiling Analysis
