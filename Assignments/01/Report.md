@@ -6,16 +6,20 @@ Here's a table showing the improvements I did to make the application go faster.
 
 | Version | Time | Speedup | Memory (KB) | Changes |
 | :-----: | ---- | :-----: | :------: | ------- |
-| [01](test.cpp) | 3.66s | &mdash; | 1041752 | Initial version - no changes |
-| 02 | 1.78s | 2.05x | 1041916 | Compiled with -Os to see about minimizing memory usage |
-| [03](03.cpp) | 3.67 | .99x| 1041844 | using reciprocals as compared to divisions
+| [01](test.cpp) | 10.51s | &mdash; | 1044092 | Initial version - no changes |
+| [02] (01.cpp) | 9.73s | 1.08x | 1041332 | Unrolled loop that was calling computePerimeter() |
+| [03](01.cpp) | 1.97 | 5.33x| 1041332 | along with the loop unrolling, I compile with the -Ofast flag
 
 ## Profiling Analysis
 
 ### Initial Review
 
-Looking at [01's profile](01.prof), the hottest function was `Transform::float4::perspectiveDivide() const`, which consumed around 28% of the program's execution time.  There's not a lot in that function, but it does three floating-point divisions, so perhaps that's something to try optimizing.
+Looking at [test's profile], the hottest function was `Transform::float4::perspectiveDivide() const`, which consumed around 28% of the program's execution time.  There's not a lot in that function, but it does three floating-point divisions, so perhaps that's something to try optimizing.
 
 ### Trying to make `computePerimeter()` go faster
 
-computePerimeter()` does several divisions by the same value `w`.  A common trick is instead of dividing by the same value multiple times, to compute the value's reciprocal, and multiple by that value.  This assumes that multiplication is a faster operation than division.
+computePerimeter()` is called a bunch of times. In order to hopefully help this issue, I unrolled the loop where computePerimeter() was called.
+By doing so it helped by almost 1 second. 
+
+### Changing compile flags
+By changing the compile flag to -Ofast, in combination to the previous change of unrolling loops, it significantly helped and sped up the process by about 5x.
