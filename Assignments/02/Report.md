@@ -7,7 +7,7 @@ Here's a table showing the improvements I did to make the application go faster.
 | Version | Time | Speedup | Changes |
 | :-----: | ---- | :-----: | ------- |
 | [01](lychrel.cpp) | 11.48m | &mdash; | Initial version - no changes |
-| [02](lychrel.cpp) | na | na | na |
+| [02](lychrel.cpp) | 1.21m | 9.48x | Implemented threading and compiled with -O3 |
 | [03](lychrel.cpp) | na | na | na|
 
 ## Profiling Analysis
