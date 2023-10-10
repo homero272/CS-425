@@ -55,13 +55,12 @@ int main() {
    size_t chunkSize = int(data.size() / NumThreads + 1);
    for(int id = 0; id < NumThreads; ++id){
        std::thread t{ [&,id]() {
-        auto start = id * chunkSize;
-        auto end = std::min(data.size(), start + chunkSize);
+
        Number number;
   
-   for (auto i = start; i < end; ++i){
+   while(data.getNext(number)) {
       
-       Number number = data[i];
+       
       
        size_t iter = 0;
        Number n = number;
