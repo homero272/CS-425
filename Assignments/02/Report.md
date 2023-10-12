@@ -21,4 +21,4 @@ threads and improve load balancing via dynamic scheduling!!!
 It took a long time with no changes to run the lychrel program. However, when introduced to threads this should make it a lot faster. Also
 incorpoerating dynamic scheduling, helps performance by making the load balance better.
 ### Changing compile flags
-By changing the compile flag to -O3, in combination to the previous threading and dynamic scheduling, it sped up the process by about 10.63x
+By changing the compile flag to -O3, in combination to the previous threading and dynamic scheduling, it sped up the process by about 10.73x
