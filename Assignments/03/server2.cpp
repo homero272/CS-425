@@ -128,7 +128,7 @@ int main(int argc, char* argv[]) {
         //std::cout << "Consumer: I'm done\n";
     }};
 
-    // Sleep for some time (you can replace this with your termination logic)
+    
     std::jthread boss{[&]() {
         std::chrono::milliseconds workingHours(3);
         std::this_thread::sleep_for(workingHours);
